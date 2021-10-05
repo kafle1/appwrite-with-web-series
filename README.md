@@ -1,4 +1,4 @@
-#Appwrite with web. 
+# Appwrite with web. 
 Code of the video series on appwrite with web
 
 
