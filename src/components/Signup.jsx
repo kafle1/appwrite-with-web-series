@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import SocialSignin from "./SocialSignin";
 import { Link } from "react-router-dom";
 import { account } from "../services/appwriteConfig";
+import { useHistory } from "react-router";
 
 const Signup = () => {
+const history = useHistory();
+
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
@@ -19,7 +22,8 @@ const Signup = () => {
         userDetails.password,
         userDetails.name
       );
-      console.log(newUser);
+     await account.createSession(userDetails.email, userDetails.password);
+     history.push('/home');
     } catch (error) {
       console.log(e.message);
     }
