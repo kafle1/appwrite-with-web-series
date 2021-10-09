@@ -5,7 +5,7 @@ import { account } from "../services/appwriteConfig";
 import { useHistory } from "react-router";
 
 const Signup = () => {
-const history = useHistory();
+  const history = useHistory();
 
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -22,8 +22,10 @@ const history = useHistory();
         userDetails.password,
         userDetails.name
       );
-     await account.createSession(userDetails.email, userDetails.password);
-     history.push('/home');
+      await account.createSession(userDetails.email, userDetails.password);
+
+      await account.createVerification("http://localhost:3000/home");
+      console.log('Verification email has been sent');
     } catch (error) {
       console.log(e.message);
     }

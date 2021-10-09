@@ -37,6 +37,20 @@ const Home = () => {
     }
   };
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get("userId");
+  const secret = urlParams.get("secret");
+
+  account
+    .updateVerification(userId, secret)
+    .then(() => {
+      console.log("User is verified");
+      history.push("/home");
+    })
+    .catch((e) => {
+      console.log("Verification failed", e);
+    });
+
   if (userDetails) {
     return (
       <div className="container-xxl border mt-5 p-3">
@@ -49,7 +63,9 @@ const Home = () => {
           >
             Logout
           </button>
-          <button className="btn btn-primary mx-1">Change Password</button>
+          <button className="btn btn-primary mx-1" onClick={()=> {
+            history.push('/forget-password')
+          }} >Change Password</button>
         </div>
 
         <div className="my-3">
