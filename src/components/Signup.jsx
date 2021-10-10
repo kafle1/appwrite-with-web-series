@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import SocialSignin from "./SocialSignin";
 import { Link } from "react-router-dom";
 import { account } from "../services/appwriteConfig";
-import { useHistory } from "react-router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
-  const history = useHistory();
+
 
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -15,20 +16,25 @@ const Signup = () => {
 
   const signupUser = async (e) => {
     e.preventDefault();
-
-    try {
-      const newUser = await account.create(
-        userDetails.email,
-        userDetails.password,
-        userDetails.name
-      );
-      await account.createSession(userDetails.email, userDetails.password);
-
-      await account.createVerification("http://localhost:3000/home");
-      console.log('Verification email has been sent');
-    } catch (error) {
-      console.log(e.message);
+    if (userDetails.email && userDetails.password && userDetails.name ){
+      try {
+        await account.create(
+         userDetails.email,
+         userDetails.password,
+         userDetails.name
+       );
+       await account.createSession(userDetails.email, userDetails.password);
+ 
+       await account.createVerification("http://localhost:3000/home");
+ 
+       toast.success("Verification email has been sent!");
+     } catch (error) {
+       toast.error(`${e.message}`);
+     }
+    } else {
+      toast.error('Fill out the details first!')
     }
+   
   };
 
   return (
@@ -51,6 +57,7 @@ const Signup = () => {
             type="text"
             className="form-control"
             id="name"
+            required
             aria-describedby="name"
             name="email"
           />
@@ -69,6 +76,7 @@ const Signup = () => {
             type="email"
             className="form-control"
             id="email"
+            required
             aria-describedby="email"
             name="password"
           />
@@ -84,6 +92,7 @@ const Signup = () => {
                 password: e.target.value,
               });
             }}
+            required
             type="password"
             className="form-control"
             id="password"
@@ -107,6 +116,7 @@ const Signup = () => {
       </form>
 
       <SocialSignin />
+    
     </div>
   );
 };

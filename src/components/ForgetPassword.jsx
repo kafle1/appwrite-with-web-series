@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import { account } from "../services/appwriteConfig";
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer, toast } from "react-toastify";
 
 const ForgetPassword = () => {
   const [userEmail, setuserEmail] = useState("");
 
   const forgetPassword = async (e) => {
     e.preventDefault();
+    if (userEmail && userEmail.includes('@')) {
+      await account.createRecovery(
+        userEmail,
+        "http://localhost:3000/reset-password"
+      );
 
-  await  account.createRecovery(userEmail, 'http://localhost:3000/reset-password')
-  console.log('Email has been sent');
+      toast.success(`Email has been sent!`);
+    } else {
+      toast.error(`Please enter your email!`);
+    }
   };
 
   return (
@@ -21,17 +31,34 @@ const ForgetPassword = () => {
           </label>
           <input
             onChange={(e) => {
-              setuserEmail(e.target.value)
+              setuserEmail(e.target.value);
             }}
             type="email"
-            name="password"
+            name="email"
             required
             className="form-control"
             id="exampleInputPassword1"
           />
         </div>
-        <button className="btn btn-primary" onClick={(e)=> forgetPassword(e)} >Reset password</button>
+        <button
+          className="btn btn-primary"
+          type="submit"
+          onClick={(e) => forgetPassword(e)}
+        >
+          Reset password
+        </button>
       </form>
+      <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>
   );
 };

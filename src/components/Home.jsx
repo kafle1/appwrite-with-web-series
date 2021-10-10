@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { account } from "../services/appwriteConfig";
 import { useHistory } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const history = useHistory();
   const [userDetails, setUserDetails] = useState();
 
-  useEffect(async () => {
+  const fetchUser = async () => {
     try {
       const data = await account.get();
       setUserDetails(data);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  useEffect(() => {
+    fetchUser();
   }, [userDetails]);
 
   const handleLogout = async (e) => {
     e.preventDefault();
-
     try {
       await account.deleteSession("current");
       history.push("/");
     } catch (error) {
-      console.log(error);
+      toast.error(`${error.message}`);
     }
   };
 
@@ -33,7 +38,7 @@ const Home = () => {
       await account.delete();
       history.push("/");
     } catch (error) {
-      console.log(error);
+      toast.error(`${error.message}`);
     }
   };
 
@@ -41,15 +46,18 @@ const Home = () => {
   const userId = urlParams.get("userId");
   const secret = urlParams.get("secret");
 
-  account
-    .updateVerification(userId, secret)
-    .then(() => {
-      console.log("User is verified");
-      history.push("/home");
-    })
-    .catch((e) => {
-      console.log("Verification failed", e);
-    });
+  if (userId) {
+    account
+      .updateVerification(userId, secret)
+      .then(() => {
+        toast.success("User is verified!");
+        history.push("/home");
+      })
+      .catch((e) => {
+        toast.error("Verification failed");
+        console.log(e);
+      });
+  }
 
   if (userDetails) {
     return (
@@ -63,9 +71,14 @@ const Home = () => {
           >
             Logout
           </button>
-          <button className="btn btn-primary mx-1" onClick={()=> {
-            history.push('/forget-password')
-          }} >Change Password</button>
+          <button
+            className="btn btn-primary mx-1"
+            onClick={() => {
+              history.push("/forget-password");
+            }}
+          >
+            Change Password
+          </button>
         </div>
 
         <div className="my-3">
@@ -90,6 +103,17 @@ const Home = () => {
             Delete Account
           </button>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     );
   } else {
@@ -98,7 +122,10 @@ const Home = () => {
         <h2 className="text-center my-3">
           Please login first to see the homepage
         </h2>
-        <button className="btn btn-dark" onClick={() => history.push("/")}>
+        <button
+          className="btn btn-dark text-center "
+          onClick={() => history.push("/")}
+        >
           Login
         </button>
       </div>

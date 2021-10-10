@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { account } from "../services/appwriteConfig";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ResetPassword = () => {
 
@@ -16,13 +18,18 @@ const ResetPassword = () => {
     const userId = urlParams.get("userId");
     const secret = urlParams.get("secret");
 
-    await account.updateRecovery(
-      userId,
-      secret,
-      password.newPassword,
-      password.repeatedPassword
-    );
-    history.push("/home");
+    if (password.newPassword === password.repeatedPassword){
+      await account.updateRecovery(
+        userId,
+        secret,
+        password.newPassword,
+        password.repeatedPassword
+      );
+      history.push("/home");
+    } else {
+      toast.error('Both new password and the repeated password should be same');
+    }
+ 
   };
 
   return (
@@ -75,6 +82,17 @@ const ResetPassword = () => {
           </button>
         </form>
       </div>
+      <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>
   );
 };

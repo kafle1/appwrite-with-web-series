@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { account } from "../services/appwriteConfig";
 import SocialSignin from "./SocialSignin";
 import { useHistory } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const history = useHistory();
@@ -13,12 +14,13 @@ const Login = () => {
 
   const loginUser = async (e) => {
     e.preventDefault();
-
+  
     try {
       await account.createSession(userDetails.email, userDetails.password);
       history.push("/home");
     } catch (error) {
-      console.log(error);
+      toast.error(`${error.message}`)
+
     }
   };
 
@@ -86,6 +88,8 @@ const Login = () => {
         </button>
       </form>
       <SocialSignin />
+
+      
     </div>
   );
 };

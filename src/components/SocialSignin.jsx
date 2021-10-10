@@ -1,4 +1,6 @@
 import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { account } from "../services/appwriteConfig";
 
 const SocialSignin = () => {
@@ -11,11 +13,9 @@ const SocialSignin = () => {
         "http://localhost:3000/home",
         "http://localhost:3000/login"
       );
-
-    } catch(e){
-      console.log(e.message);
+    } catch (e) {
+      toast.error(`${e.message}`);
     }
-    
   };
 
   const facebookAuth = (e) => {
@@ -27,10 +27,9 @@ const SocialSignin = () => {
         "http://localhost:3000/home",
         "http://localhost:3000/login"
       );
-    } catch(e){
-      console.log(e.message);
+    } catch (e) {
+      toast.error(`${e.message}`);
     }
-   
   };
 
   return (
@@ -51,6 +50,17 @@ const SocialSignin = () => {
       >
         Facebook
       </button>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
