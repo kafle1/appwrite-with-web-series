@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-xl border my-5 p-3">
+      <h2 className="text-center my-2">Image Hub</h2>
+
+      <div className="container border p-3 my-3">
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">
+              <b>Upload your image</b> :
+            </label>
+            <input
+              type="file"
+              class="btn form-control-file"
+              id="exampleFormControlFile1"
+            />
+          </div>
+          <button className="btn btn-primary">Upload</button>
+        </form>
+      </div>
+      <img
+        src="https://source.unsplash.com/user/erondu/200x200"
+        class="img-thumbnail"
+        alt="..."
+      />
     </div>
   );
 }
