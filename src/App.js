@@ -20,11 +20,19 @@ function App() {
           <button className="btn btn-primary">Upload</button>
         </form>
       </div>
-      <img
-        src="https://source.unsplash.com/user/erondu/200x200"
-        class="img-thumbnail"
-        alt="..."
-      />
+      <div className="container-xxl d-flex flex-wrap justify-content-start">
+        <div class="card col-sm-3 col-xl-3">
+          <img
+            class="card-img-top"
+            src="https://source.unsplash.com/user/erondu/200x200"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <button className="btn btn-danger">Delete</button>
+            <button className="btn btn-primary mx-2">Download</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
