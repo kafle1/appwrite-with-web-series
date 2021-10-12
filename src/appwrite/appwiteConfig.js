@@ -8,4 +8,6 @@ sdk
 ;
 
 export const db = sdk.database;
+export const account =sdk.account;
 
+ export const COLLECTION_ID = '616453cdbd1c2';

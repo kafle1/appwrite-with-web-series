@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { COLLECTION_ID, db } from "../appwrite/appwiteConfig";
 
 const Table = () => {
+  const [documents, setDocuments] = useState();
+
+  //Get all documents
+  const getDocuments = async () => {
+    const res = await db.listDocuments(COLLECTION_ID);
+    setDocuments(res.documents);
+  };
+
+  useEffect(() => {
+    getDocuments();
+  }, [documents]);
+
   return (
     <div className="container my-5 border  p-3">
       <h2 className="text-center">Recipes</h2>
@@ -15,16 +28,20 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Momo</td>
-            <td>Onion, Wheat, Cabbage, Spices</td>
-            <td>Recipe</td>
-            <td>
-              <button className="btn btn-danger">Delete</button>
-              <button className="btn btn-primary mx-2">Edit</button>
-            </td>
-          </tr>
-         
+          {documents &&
+            documents.map((document) => {
+              return (
+                <tr>
+                  <td>{document.food_name}</td>
+                  <td>{document.ingredients}</td>
+                  <td>{document.recipe} </td>
+                  <td>
+                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-primary mx-2">Edit</button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>
