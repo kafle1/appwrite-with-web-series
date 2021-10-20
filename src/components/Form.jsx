@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { COLLECTION_ID, db, account } from "../appwrite/appwiteConfig";
 
 const Form = () => {
@@ -8,6 +8,7 @@ const Form = () => {
     recipe: "",
   });
 
+  const form = useRef(null);
   //Add new Recipe to database
   const addNewRecipe = async (e) => {
     e.preventDefault();
@@ -28,20 +29,22 @@ const Form = () => {
       });
       console.log(res);
     }
+
+    form.current.reset();
   };
 
   return (
     <div className="container my-5 border  p-3">
       <h2 className="text-center">Quick Recipe</h2>
       <hr />
-      <form>
-        <div class="mb-3">
-          <label for="food" class="form-label">
+      <form ref={form}>
+        <div className="mb-3">
+          <label for="food" className="form-label">
             Food Name
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="food"
             onChange={(e) => {
               setNewRecipe({
@@ -52,13 +55,13 @@ const Form = () => {
           />
         </div>
 
-        <div class="mb-3">
-          <label for="ingredients" class="form-label">
+        <div className="mb-3">
+          <label for="ingredients" className="form-label">
             Ingredients
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="ingredients"
             onChange={(e) => {
               setNewRecipe({
@@ -69,12 +72,12 @@ const Form = () => {
           />
         </div>
 
-        <div class="mb-3">
-          <label for="recipe" class="form-label">
+        <div className="mb-3">
+          <label for="recipe" className="form-label">
             Recipe
           </label>
           <textarea
-            class="form-control"
+            className="form-control"
             id="recipe"
             rows="3"
             onChange={(e) => {
@@ -88,7 +91,7 @@ const Form = () => {
 
         <button
           type="submit"
-          class="btn btn-primary"
+          className="btn btn-primary"
           onClick={(e) => addNewRecipe(e)}
         >
           Add New Recipe
