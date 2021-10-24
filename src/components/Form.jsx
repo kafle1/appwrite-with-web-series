@@ -2,6 +2,21 @@ import React, { useState, useRef } from "react";
 import { COLLECTION_ID, db, account } from "../appwrite/appwiteConfig";
 
 const Form = () => {
+  
+  
+   //Create a new sesson for the user 
+   const createUser = async ()=> {
+    var newUser = await account.createAnonymousSession();
+    localStorage.setItem('newUser', JSON.stringify(newUser));
+   };
+  
+  //Bug Fix
+  const retrievedUser = JSON.parse(localStorage.getItem('newUser'));
+  if (!retrievedUser) {
+    createUser();
+  }
+  
+    
   const [newRecipe, setNewRecipe] = useState({
     food_name: "",
     ingredients: "",
